@@ -1,7 +1,7 @@
 # RSpec One Liners
 
-This gem permits this succinct one liner syntax. It's for ricers who like
-saving keystrokes.
+This gem permits succinct one liner syntax in situations that currently require more than one line of code.
+It's for impatient people who use RSpec and like saving keystrokes.
 
 ## The Situation
 
@@ -107,6 +107,8 @@ end
 In the above example, `it` is short for the return value of the method under
 test, and `calling_it` is a lambda containing the subject, suitable for use
 with `change`, already packaged up for you and ready to use.
+
+With this gem, the above example passes.
 
 ## WARNING
 
