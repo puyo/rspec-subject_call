@@ -1,9 +1,27 @@
 module RSpec
   module OneLiners
     module ExampleGroupClassMethods
+      # Define a method +subject+ for use inside examples, and also a
+      # method +calling_it+ which returns a lambda containing the subject,
+      # suitable for use with matchers that take lambdas.
+      #
+      # e.g.
+      #
+      #    subject { obj.my_method }
+      #
+      #    it { should == some_result }
+      #
+      #    it 'should change something, should syntax' do
+      #       calling_it.should change{something}
+      #    end
+      #
+      #    it 'should change something, expect syntax' do
+      #       expect(calling_it).to change{something}
+      #    end
+      #
       def subject(name=nil, &block)
-        # Add extra methods that allow calling the block that was passed, in the
-        # example's lexical scope.
+        # Add extra methods that allow calling the block that was passed, in
+        # the example's lexical scope.
         if block
           define_method(:calling_it) do
             lambda { instance_eval(&block) }
@@ -15,6 +33,11 @@ module RSpec
         super()
       end
 
+      # Allow for syntax similar to +its+:
+      #
+      #   its(:my_method) { should == 1 }
+      #   calling(:my_method) { should change{something} }
+      #
       def calling(method_name, &block)
         describe(method_name) do
           let(:__its_subject) do
@@ -38,6 +61,12 @@ module RSpec
         end
       end
 
+      # Like +it+ but sets the implicit subject to the lambda you supplied when
+      # defining the subject, so that you can use it with matchers that take
+      # blocks like +change+:
+      #
+      #   calling_it { should change{something} }
+      #
       def calling_it(desc=nil, *args, &block)
         # Create a new example, where the subject is set to the subject block,
         # as opposed to its return value.
