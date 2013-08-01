@@ -30,7 +30,7 @@ module RSpec
         end
 
         # Now proceed to do the things subject normally does.
-        super()
+        super(name, &block)
       end
 
       # Allow for syntax similar to +its+:

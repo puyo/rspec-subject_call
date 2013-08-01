@@ -37,7 +37,7 @@ $LOAD_PATH << File.dirname(__FILE__) + '../lib'
 require 'rspec/one_liners'
 
 describe A do
-  let(:a) { A.new(b: b) }
+  subject(:a) { A.new(b: b) }
   let(:b) { double('b').as_null_object }
 
   describe '#query' do
