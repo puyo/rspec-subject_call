@@ -1,3 +1,10 @@
+# RSpec One Liners
+
+This gem permits this succinct one liner syntax. It's for ricers who like
+saving keystrokes.
+
+## The Situation
+
 There are different types of methods I sometimes need to test.
 
 A **query** performs a calculation and returns a value.
@@ -79,6 +86,8 @@ But I feel as though this is more typing that I would like. I feel like this
 could be DRYed up. For example, `a.query_command_side_effect` is repeated three
 times.
 
+## The Better Situation
+
 This is how I would like to test this tricky method:
 
 ```ruby
@@ -99,10 +108,9 @@ In the above example, `it` is short for the return value of the method under
 test, and `calling_it` is a lambda containing the subject, suitable for use
 with `change`, already packaged up for you and ready to use.
 
-This gem permits this succinct one liner syntax. It's for ricers who like
-saving keystrokes.
+## WARNING
 
-**WARNING**: This gem is currently beta. There is a decent chance that its
+This gem is currently beta. There is a decent chance that its
 prototypical implementation that messes with RSpec internals will mess
 something up or cause hard to diagnose issues. On the other hand, it may just
 be crazy enough to work.
