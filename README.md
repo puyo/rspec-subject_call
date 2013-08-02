@@ -116,3 +116,89 @@ This gem is currently beta. There is a decent chance that its
 prototypical implementation that messes with RSpec internals will mess
 something up or cause hard to diagnose issues. On the other hand, it may just
 be crazy enough to work.
+
+## More Examples
+
+```ruby
+class Array
+  def sum
+    inject(:+)
+  end
+end
+
+describe Array do
+  describe '#sum' do
+    subject { call }
+
+    def call
+      array.sum
+    end
+
+    context 'with the array [1,2,3]' do
+      let(:array) { [1,2,3] }
+      it { should == 6 }
+    end
+
+    context 'with the array [1,2,nil], calling it' do
+      let(:array) { [1,2,nil] }
+      subject { method(:call) }
+      it { should raise_error }
+    end
+  end
+end
+
+require 'calling_it'
+
+describe Array do
+  describe '#sum' do
+    subject { array.sum }
+
+    context 'with the array [1,2,3]' do
+      let(:array) { [1,2,3] }
+      it { should == 6 }
+    end
+
+    context 'with the array [1,2,nil]' do
+      let(:array) { [1,2,nil] }
+      calling_it { should raise_error(TypeError) }
+    end
+  end
+end
+```
+
+```ruby
+describe Array do
+  describe '#pop' do
+    subject { call }
+
+    def call
+      array.pop
+    end
+
+    context 'with the array [1,2,3]' do
+      let(:array) { [1,2,3] }
+      it { should == 3 }
+
+      context 'calling it' do
+        subject { method(:call) }
+        it { should change(array, :size).by(-1) }
+      end
+    end
+  end
+end
+
+require 'calling_it'
+
+describe Array do
+  describe '#pop' do
+    subject { array.pop }
+
+    context 'with the array [1,2,3]' do
+      let(:array) { [1,2,3] }
+      it { should == 3 }
+      calling_it { should change(array, :size).by(-1) }
+    end
+  end
+end
+```
+```
