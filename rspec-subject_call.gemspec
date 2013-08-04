@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors                   = [ 'Gregory McIntyre' ]
   s.email                     = [ 'greg@gregorymcintyre.com' ]
   s.homepage                  = 'http://github.com/rails-oceania/rspec-subject_call'
-  s.description               = 'Enable reuse of the subject for use with expect..to..change and my_double.should_receive'
+  s.description               = 'Lets you use the subject in convenient ways with block matchers like "change" and "receive_error"'
   s.summary                   = "rspec-subject_call-#{s.version}"
   s.required_rubygems_version = '> 1.3.6'
 
