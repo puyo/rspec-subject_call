@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.platform                  = Gem::Platform::RUBY
   s.authors                   = [ 'Gregory McIntyre' ]
   s.email                     = [ 'greg@gregorymcintyre.com' ]
-  s.homepage                  = 'http://github.com/puyo/rspec-one_liners'
+  s.homepage                  = 'http://github.com/rails-oceania/rspec-subject_call'
   s.description               = 'Enable reuse of the subject for use with expect..to..change and my_double.should_receive'
   s.summary                   = "rspec-subject_call-#{s.version}"
   s.required_rubygems_version = '> 1.3.6'
