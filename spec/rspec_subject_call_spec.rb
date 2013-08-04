@@ -33,8 +33,7 @@ end
 
 # ----------------------------------------------------------------------
 
-$LOAD_PATH << File.dirname(__FILE__) + '../lib'
-require 'rspec/one_liners'
+require 'rspec/subject_call'
 
 describe A do
   subject(:a) { A.new(b: b) }
@@ -64,7 +63,7 @@ describe A do
     end
   end
 
-  describe '#query_command_side_effect - vanilla best practice' do
+  describe '#query_command_side_effect - vanilla' do
     it 'should return 1' do
       a.query_command_side_effect.should == 1
     end
@@ -79,7 +78,7 @@ describe A do
     end
   end
 
-  describe '#query_command_side_effect - calling_it with custom doc strings' do
+  describe '#query_command_side_effect - subject_call with custom doc strings' do
     subject { a.query_command_side_effect }
 
     it 'should return 1' do
@@ -87,22 +86,23 @@ describe A do
     end
 
     it 'should call b.command' do
-      subject_call.should meet_expectations { b.should_receive(:command) }
+      b.should_receive(:command)
+      call_subject
     end
 
     it 'should increment counter by 1' do
-      subject_call { should change(a, :counter).by(1) }
+      call { should change(a, :counter).by(1) }
     end
   end
 
-  describe '#query_command_side_effect - calling_it with one liners' do
+  describe '#query_command_side_effect - subject_call with one liners' do
     subject { a.query_command_side_effect }
     it { should == 1 }
-    calling_it { should change(a, :counter).by(1) }
-    calling_it { should meet_expectations { b.should_receive(:command) } }
+    call { should change(a, :counter).by(1) }
+    call { should meet_expectations { b.should_receive(:command) } }
   end
 
-  describe '#query_command_side_effect - calling_it its edition' do
+  describe '#query_command_side_effect - subject_call, its style' do
     subject { a }
     its(:query_command_side_effect) { should == 1 }
     calling(:query_command_side_effect) { should change(a, :counter).by(1) }
@@ -117,11 +117,11 @@ describe A do
     end
 
     it 'should call b.command' do
-      expect(subject_call).to meet_expectations { b.should_receive(:command) }
+      expect(call).to meet_expectations { b.should_receive(:command) }
     end
 
     it 'should increment counter by 1' do
-      expect(subject_call).to change(a, :counter).by(1)
+      expect(call).to change(a, :counter).by(1)
     end
   end
 end

@@ -1,9 +1,12 @@
+require 'rspec/subject_call/matchers/meet_expectations_matcher'
+require 'rspec/subject_call/matchers/return_value_matcher'
+
 module RSpec
-  module OneLiners
+  module SubjectCall
     module ExampleGroupClassMethods
-      # Define a method +subject+ for use inside examples, and also a
-      # method +calling_it+ which returns a lambda containing the subject,
-      # suitable for use with matchers that take lambdas.
+      # Define a method +subject+ for use inside examples, and also a method
+      # +call+ which returns a lambda containing the subject, suitable for use
+      # with matchers that take lambdas.
       #
       # e.g.
       #
@@ -12,24 +15,24 @@ module RSpec
       #    it { should == some_result }
       #
       #    it 'should change something, should syntax' do
-      #       calling_it.should change{something}
+      #       call.should change{something}
       #    end
       #
       #    it 'should change something, expect syntax' do
-      #       expect(calling_it).to change{something}
+      #       expect(call).to change{something}
       #    end
       #
       def subject(name=nil, &block)
-        # Add extra methods that allow calling the block that was passed, in
-        # the example's lexical scope.
         if block
-          define_method(:calling_it) do
-            lambda { instance_eval(&block) }
+          define_method(:call_subject) do
+            instance_eval(&block)
           end
-          alias_method(:subject_call, :calling_it)
+          define_method(:call) do
+            lambda { call_subject }
+          end
         end
 
-        # Now proceed to do the things subject normally does.
+        # Do the things subject normally does.
         super(name, &block)
       end
 
@@ -65,18 +68,18 @@ module RSpec
       # defining the subject, so that you can use it with matchers that take
       # blocks like +change+:
       #
-      #   calling_it { should change{something} }
+      #   call { should change{something} }
       #
-      def calling_it(desc=nil, *args, &block)
+      def call(desc=nil, *args, &block)
         # Create a new example, where the subject is set to the subject block,
         # as opposed to its return value.
         example do
           self.class.class_eval do
             define_method(:subject) do
-              if defined?(@_subject_calling_it)
-                @_subject_calling_it
+              if defined?(@_subject_call)
+                @_subject_call
               else
-                @_subject_calling_it = calling_it
+                @_subject_call = call
               end
             end
           end
@@ -90,7 +93,7 @@ end
 module RSpec
   module Core
     class ExampleGroup
-      extend ::RSpec::OneLiners::ExampleGroupClassMethods
+      extend ::RSpec::SubjectCall::ExampleGroupClassMethods
     end
   end
 end

@@ -2,7 +2,7 @@ require 'rspec/matchers/pretty'
 require 'rspec/matchers/built_in'
 
 module RSpec
-  module OneLiners
+  module SubjectCall
     module Matchers
       class ReturnValueMatcher < RSpec::Matchers::BuiltIn::Eq
         def matches?(subject)
@@ -18,7 +18,7 @@ module RSpec
 
   module Matchers
     def return_value(expected)
-      ::RSpec::OneLiners::Matchers::ReturnValueMatcher.new(expected)
+      ::RSpec::SubjectCall::Matchers::ReturnValueMatcher.new(expected)
     end
   end
 end

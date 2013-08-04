@@ -1,6 +1,8 @@
 module RSpec
-  module OneLiners
+  module SubjectCall
     module Matchers
+      # A general purpose matcher that inverts order of operations
+      # allowing for one liners involving mock expectations.
       class MeetExpectationsMatcher
         def initialize(&block)
           @should_receives = block
@@ -20,7 +22,7 @@ module RSpec
 
   module Matchers
     def meet_expectations(&block)
-      ::RSpec::OneLiners::Matchers::MeetExpectationsMatcher.new(&block)
+      ::RSpec::SubjectCall::Matchers::MeetExpectationsMatcher.new(&block)
     end
   end
 end

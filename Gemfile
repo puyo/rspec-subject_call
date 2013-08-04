@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'pry-debugger'
+#gem 'pry-debugger'
 
 gemspec
