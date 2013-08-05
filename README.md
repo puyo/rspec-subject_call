@@ -117,10 +117,19 @@ With this gem, the above example passes.
 gem install rspec-subject_call
 ```
 
-Or, if you prefer, copy and paste this into your `Gemfile` and run `bundle`:
+If you prefer, copy and paste this into your `Gemfile` and run `bundle`:
 
 ```
 gem 'rspec-subject_call'
 ```
+
+Later that day, ensure this line is included somehow before your spec:
+
+```
+require 'rspec/subject_call'
+```
+
+Now you can use your new powers for good or for awesome.
+
 
 [1]: http://en.wikipedia.org/wiki/Command%E2%80%93query_separation "Command-Query Separation"
