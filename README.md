@@ -111,5 +111,16 @@ already packaged up for you and ready to use.
 
 With this gem, the above example passes.
 
+## Installation
+
+```
+gem install rspec-subject_call
+```
+
+Or, if you prefer, copy and paste this into your `Gemfile` and run `bundle`:
+
+```
+gem 'rspec-subject_call'
+```
 
 [1]: http://en.wikipedia.org/wiki/Command%E2%80%93query_separation "Command-Query Separation"
