@@ -8,10 +8,9 @@ Gem::Specification.new do |s|
   s.authors                   = [ 'Gregory McIntyre' ]
   s.email                     = [ 'greg@gregorymcintyre.com' ]
   s.homepage                  = 'http://github.com/puyo/rspec-subject_call'
-  s.description               = 'Use the rspec subject more conveniently'
+  s.description               = 'Use the rspec subject in additional and convenient ways'
   s.summary                   = "rspec-subject_call-#{s.version}"
 
-  s.files = `git ls-files`.split($\)
-  s.executables = `git ls-files`.split("\n").map{|f| f =~ /^bin\/(.*)/ ? $1 : nil}.compact
+  s.files = `git ls-files`.split($\) - ['.gitignore']
   s.require_path = 'lib'
 end

@@ -1,25 +1,21 @@
 require 'rspec/subject_call/matchers/meet_expectations_matcher'
-require 'rspec/subject_call/matchers/return_value_matcher'
 
 module RSpec
   module SubjectCall
     module ExampleGroupClassMethods
-      # Define a method +subject+ for use inside examples, and also a method
-      # +call+ which returns a lambda containing the subject, suitable for use
-      # with matchers that take lambdas.
+      # Define a method +subject+ for use inside example groups which provides
+      # a +call+ method for examples in this group which returns a lambda
+      # containing the subject, suitable for use with matchers that take
+      # lambdas, such as +change+.
       #
       # e.g.
       #
       #    subject { obj.my_method }
       #
-      #    it { should == some_result }
+      #    it { is_expected.to eq(some_result) }
       #
-      #    it 'should change something, should syntax' do
-      #       call.should change{something}
-      #    end
-      #
-      #    it 'should change something, expect syntax' do
-      #       expect(call).to change{something}
+      #    it 'is expected to change something' do
+      #       expect(call).to change { something }
       #    end
       #
       def subject(name=nil, &block)
@@ -36,39 +32,11 @@ module RSpec
         super(name, &block)
       end
 
-      # Allow for syntax similar to +its+:
-      #
-      #   its(:my_method) { should == 1 }
-      #   calling(:my_method) { should change{something} }
-      #
-      def calling(method_name, &block)
-        describe(method_name) do
-          let(:__its_subject) do
-            method_chain = method_name.to_s.split('.')
-            lambda do
-              method_chain.inject(subject) do |inner_subject, attr|
-                inner_subject.send(attr)
-              end
-            end
-          end
-
-          def should(matcher=nil, message=nil)
-            RSpec::Expectations::PositiveExpectationHandler.handle_matcher(__its_subject, matcher, message)
-          end
-
-          def should_not(matcher=nil, message=nil)
-            RSpec::Expectations::NegativeExpectationHandler.handle_matcher(__its_subject, matcher, message)
-          end
-
-          example(&block)
-        end
-      end
-
       # Like +it+ but sets the implicit subject to the lambda you supplied when
       # defining the subject, so that you can use it with matchers that take
       # blocks like +change+:
       #
-      #   call { should change{something} }
+      #   call { is_expected.to change { something } }
       #
       def call(desc=nil, *args, &block)
         # Create a new example, where the subject is set to the subject block,
@@ -76,11 +44,7 @@ module RSpec
         example do
           self.class.class_eval do
             define_method(:subject) do
-              if defined?(@_subject_call)
-                @_subject_call
-              else
-                @_subject_call = call
-              end
+              call # calls define_method(:call) inside def subject above
             end
           end
           instance_eval(&block)

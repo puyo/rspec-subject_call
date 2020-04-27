@@ -1,51 +1,55 @@
-class A
-  attr :x
+require 'spec_helper'
 
-  def initialize(args = {})
-    @b = args[:b]
-    @x = 0
+module ReadmeExample
+  class A
+    attr :x
+
+    def initialize(b: nil)
+      @x = 0
+      @b = b
+    end
+
+    def query
+      1
+    end
+
+    def command
+      @x = 1
+    end
+
+    def query_command
+      @x = 1
+      1
+    end
+
+    def query_command_side_effect
+      @b.command
+      @x = 1
+      1
+    end
   end
 
-  def query
-    1
-  end
-
-  def command
-    @x = 1
-  end
-
-  def query_command
-    @x = 1
-    1
-  end
-
-  def query_command_side_effect
-    @b.command
-    @x = 1
-    1
+  class B
+    def command
+    end
   end
 end
 
-class B
-  def command
-  end
-end
-
-describe A do
-  let(:a) { A.new(b: b) }
+describe "ReadmeExample::A, vanilla" do
+  let(:a) { ReadmeExample::A.new(b: b) }
   let(:b) { double('b').as_null_object }
 
   describe '#query_command_side_effect' do
-    it 'should return 1' do
-      a.query_command_side_effect.should == 1
+    it 'is expected to return 1' do
+      expect(a.query_command_side_effect).to eq(1)
     end
 
-    it 'should update x' do
+    it 'is expected to update x' do
       expect { a.query_command_side_effect }.to change(a, :x)
     end
 
-    it 'should call command on b' do
-      b.should_receive(:command).once
+    it 'is expected to call command on b' do
+      expect(b).to receive(:command).once
       a.query_command_side_effect
     end
   end
@@ -53,14 +57,14 @@ end
 
 require 'rspec/subject_call'
 
-describe A do
-  let(:a) { A.new(b: b) }
+describe "ReadmeExample::A, subject_call style" do
+  let(:a) { ReadmeExample::A.new(b: b) }
   let(:b) { double('b').as_null_object }
 
   describe '#query_command_side_effect' do
     subject { a.query_command_side_effect }
-    it { should == 1 }
-    call { should change(a, :x) }
-    call { should meet_expectations { b.should_receive(:command) } }
+    it { is_expected.to eq(1) }
+    call { is_expected.to change(a, :x) }
+    call { is_expected.to meet_expectations { expect(b).to receive(:command) } }
   end
 end
