@@ -13,4 +13,6 @@ Gem::Specification.new do |s|
 
   s.files = `git ls-files`.split($\) - ['.gitignore']
   s.require_path = 'lib'
+
+  s.add_runtime_dependency 'rspec', '>= 3.0.0'
 end
