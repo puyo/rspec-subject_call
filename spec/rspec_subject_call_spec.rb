@@ -103,7 +103,7 @@ describe RSpecSubjectCallSpec::A do
     subject { a.query_command_side_effect }
     it { is_expected.to eq(1) }
     call { is_expected.to change(a, :counter).by(1) }
-    call { is_expected.to meet_expectations { expect(b).to receive(:command).once } }
+    call { is_expected.to cause(b).to receive(:command).once }
   end
 
   describe '#query_command_side_effect - expect syntax' do

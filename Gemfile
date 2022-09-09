@@ -6,3 +6,4 @@ gemspec
 
 gem 'rspec'
 gem 'simplecov', require: false
+gem 'pry-byebug'

@@ -67,15 +67,15 @@ describe "ReadmeExample::A, vanilla" do
   let(:b) { double('b').as_null_object }
 
   describe '#query_command_side_effect' do
-    it 'is expected to return 1' do
+    it "is expected to return 1" do
       expect(a.query_command_side_effect).to eq(1)
     end
 
-    it 'is expected to update x' do
+    it "is expected to update x" do
       expect { a.query_command_side_effect }.to change(a, :x)
     end
 
-    it 'is expected to call command on b' do
+    it "is expected to call command on b" do
       expect(b).to receive(:command).once
       a.query_command_side_effect
     end
@@ -101,7 +101,11 @@ describe "ReadmeExample::A, subject_call style" do
     subject { a.query_command_side_effect }
     it { is_expected.to eq(1) }
     call { is_expected.to change(a, :x) }
-    call { is_expected.to meet_expectations { expect(b).to receive(:command) } }
+
+    it "is expected to call command on b" do
+      expect(b).to receive(:command).once
+      subject
+    end
   end
 end
 ```
@@ -111,7 +115,24 @@ test, and `call` is a lambda containing the subject, suitable for use with
 `change` and `raise_error` and any other matcher that works with lambdas,
 already packaged up for you and ready to use.
 
-With this gem, the above example passes.
+With this gem, the above example passes:
+
+```
+ReadmeExample::A, vanilla
+  #query_command_side_effect
+    is expected to return 1
+    is expected to update x
+    is expected to call command on b
+
+ReadmeExample::A, subject_call style
+  #query_command_side_effect
+    is expected to eq 1
+    is expected to change `ReadmeExample::A#x`
+    is expected to call command on b
+
+Finished in 0.01393 seconds (files took 0.20693 seconds to load)
+6 examples, 0 failures
+```
 
 ## Installation
 

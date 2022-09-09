@@ -42,10 +42,8 @@ module RSpec
         # Create a new example, where the subject is set to the subject block,
         # as opposed to its return value.
         example do
-          self.class.class_eval do
-            define_method(:subject) do
-              call # calls define_method(:call) inside def subject above
-            end
+          def subject
+            call
           end
           instance_eval(&block)
         end

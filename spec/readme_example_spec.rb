@@ -40,15 +40,15 @@ describe "ReadmeExample::A, vanilla" do
   let(:b) { double('b').as_null_object }
 
   describe '#query_command_side_effect' do
-    it 'is expected to return 1' do
+    it "is expected to return 1" do
       expect(a.query_command_side_effect).to eq(1)
     end
 
-    it 'is expected to update x' do
+    it "is expected to update x" do
       expect { a.query_command_side_effect }.to change(a, :x)
     end
 
-    it 'is expected to call command on b' do
+    it "is expected to call command on b" do
       expect(b).to receive(:command).once
       a.query_command_side_effect
     end
@@ -63,8 +63,14 @@ describe "ReadmeExample::A, subject_call style" do
 
   describe '#query_command_side_effect' do
     subject { a.query_command_side_effect }
+
     it { is_expected.to eq(1) }
+
     call { is_expected.to change(a, :x) }
-    call { is_expected.to meet_expectations { expect(b).to receive(:command) } }
+
+    it "is expected to call command on b" do
+      expect(b).to receive(:command).once
+      subject
+    end
   end
 end
